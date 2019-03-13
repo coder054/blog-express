@@ -8,15 +8,26 @@ var session = require('express-session')
 var expressValidator = require('express-validator')
 var flash = require('connect-flash')
 var mongoose = require('mongoose')
+var MongoDBStore = require('connect-mongodb-session')(session)
 var { cronjob } = require('./cronjob/cronjob.js')
 
-cronjob()
 // mongoose.connect('mongodb://localhost/blog_express')
 mongoose.connect(
 	'mongodb://admin:Thuhuyen192@ds211096.mlab.com:11096/blog-express'
 )
+
 var db = mongoose.connections
 
+var store = new MongoDBStore({
+	uri: 'mongodb://admin:Thuhuyen192@ds211096.mlab.com:11096/blog-express',
+	collection: 'mySessions',
+})
+
+store.on('error', function(error) {
+	console.log(error)
+})
+
+cronjob()
 var routes = require('./routes/index')
 var articles = require('./routes/articles')
 var categories = require('./routes/categories')
@@ -40,6 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(
 	session({
+		store: store,
 		secret: 'some_text',
 		resave: false,
 		saveUninitialized: true,
