@@ -9,7 +9,9 @@ var expressValidator = require('express-validator')
 var flash = require('connect-flash')
 var mongoose = require('mongoose')
 var MongoDBStore = require('connect-mongodb-session')(session)
-// var { cronjob } = require('./cronjob/cronjob.js')
+var { cronjob } = require('./cronjob/cronjob.js')
+// const runMiddleware = require('run-middleware')
+// runMiddleware(app)
 
 // mongoose.connect('mongodb://localhost/blog_express')
 mongoose.connect(
@@ -27,7 +29,7 @@ store.on('error', function(error) {
 	console.log(error)
 })
 
-// cronjob()
+cronjob()
 var routes = require('./routes/index')
 var articles = require('./routes/articles')
 var categories = require('./routes/categories')

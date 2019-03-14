@@ -1,6 +1,8 @@
-var mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
-var articleSchema = mongoose.Schema({
+const Schema = mongoose.Schema
+
+const ArticleSchema = new Schema({
 	title: {
 		type: String,
 	},
@@ -44,7 +46,10 @@ var articleSchema = mongoose.Schema({
 	],
 })
 
-var Article = (module.exports = mongoose.model('Article', articleSchema))
+const Article = mongoose.model('Article', ArticleSchema)
+
+module.exports = Article
+/////////////
 
 // Get Articles
 module.exports.getArticles = function(query, callback, limit) {

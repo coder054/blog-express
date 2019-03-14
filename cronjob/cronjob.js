@@ -17,10 +17,10 @@ async function downloadIMG(option) {
 
 var cronjob = () => {
 	return new CronJob(
-		'0 */2 * * *',
+		//'0 */2 * * *',
 		// '* * * * * *',
 		//'*/2 * * * * *',
-		//'* * * * *',
+		'* * * * *',
 		async function() {
 			console.log('run cronjob')
 
@@ -33,7 +33,6 @@ var cronjob = () => {
 }
 
 function getScienceNews() {
-	console.log('getScienceNews')
 	let rootUrl = 'https://www.the-scientist.com'
 	var c = new Crawler({
 		maxConnections: 10,
@@ -49,7 +48,6 @@ function getScienceNews() {
 				const ob = $('.ArticleSummary header > a')
 
 				for (let i = 0; i < ob.length; i++) {
-					console.log(ob[i].attribs.href)
 					let detailUrl = rootUrl + ob[i].attribs.href
 					fetchNews(detailUrl)
 				}
@@ -64,7 +62,6 @@ function getScienceNews() {
 }
 
 async function fetchNews(url) {
-	console.log('fetchNews with url: ' + url)
 	var c = new Crawler({
 		maxConnections: 10,
 		// This will be called for each crawled page
@@ -81,11 +78,7 @@ async function fetchNews(url) {
 				let x = await Article.find({})
 				let y = x.map(article => article.title)
 				let z = y.includes(title)
-				if (z) {
-					console.log('title already exist')
-					return
-				}
-				console.log('title chua ton tai')
+				if (z) return
 				let summary = $('article header > h2').text()
 				let body = $('#ArticleBody').html()
 				let img = $('picture > source')[3].attribs.srcset
@@ -99,13 +92,8 @@ async function fetchNews(url) {
 				article.summary = summary
 				article.featuredimage = imgName
 				Article.addArticle(article, function(err, article) {
-					if (err) {
-						console.log('err', err)
-					} else {
-						console.log('article', article)
-					}
+					console.log('add article: ' + title)
 				})
-				console.log('gg')
 			}
 			done()
 		},
@@ -114,4 +102,4 @@ async function fetchNews(url) {
 	c.queue(url)
 }
 
-module.exports = { cronjob, getScienceNews, fetchNews }
+module.exports = { cronjob, getScienceNews }
