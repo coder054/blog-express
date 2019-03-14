@@ -3,8 +3,8 @@ var Crawler = require('crawler')
 var Article = require('./../models/article.js')
 const download = require('image-downloader')
 
-async function downloadIMG(option) {
-	option.dest = './public/uploads/'
+async function downloadIMG(option, extensionImg) {
+	option.dest = './public/uploads/' + 'gg-' + Date.now() + extensionImg
 	try {
 		const { filename, image } = await download.image(option)
 		let str2 = filename.replace('public/uploads/', '')
@@ -83,8 +83,11 @@ async function fetchNews(url) {
 				let body = $('#ArticleBody').html()
 				let img = $('picture > source')[3].attribs.srcset
 
-				let imgName = await downloadIMG({ url: img })
-
+				let extensionImg = img.substr(img.length - 5)
+				let imgName = await downloadIMG({ url: img }, extensionImg)
+				setTimeout(() => {
+					return
+				}, 200)
 				// save image to database
 				var article = new Article()
 				article.title = title
