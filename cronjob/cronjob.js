@@ -64,6 +64,7 @@ function getScienceNews() {
 }
 
 async function fetchNews(url) {
+	console.log('fetchNews with url: ' + url)
 	var c = new Crawler({
 		maxConnections: 10,
 		// This will be called for each crawled page
@@ -80,7 +81,11 @@ async function fetchNews(url) {
 				let x = await Article.find({})
 				let y = x.map(article => article.title)
 				let z = y.includes(title)
-				if (z) return
+				if (z) {
+					console.log('title already exist')
+					return
+				}
+				console.log('title chua ton tai')
 				let summary = $('article header > h2').text()
 				let body = $('#ArticleBody').html()
 				let img = $('picture > source')[3].attribs.srcset
@@ -100,6 +105,7 @@ async function fetchNews(url) {
 						console.log('article', article)
 					}
 				})
+				console.log('gg')
 			}
 			done()
 		},
