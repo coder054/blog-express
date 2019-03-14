@@ -48,7 +48,9 @@ var Article = (module.exports = mongoose.model('Article', articleSchema))
 
 // Get Articles
 module.exports.getArticles = function(query, callback, limit) {
-	Article.find(query, callback).limit(limit)
+	Article.find(query, callback)
+		.limit(limit)
+		.sort({ created_at: -1 })
 }
 
 // Add Article
