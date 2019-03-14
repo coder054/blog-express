@@ -32,9 +32,8 @@ var cronjob = () => {
 	)
 }
 
-module.exports = { cronjob }
-
 function getScienceNews() {
+	console.log('getScienceNews')
 	let rootUrl = 'https://www.the-scientist.com'
 	var c = new Crawler({
 		maxConnections: 10,
@@ -104,3 +103,5 @@ async function fetchNews(url) {
 
 	c.queue(url)
 }
+
+module.exports = { cronjob, getScienceNews, fetchNews }
