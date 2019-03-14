@@ -94,7 +94,11 @@ async function fetchNews(url) {
 				article.summary = summary
 				article.featuredimage = imgName
 				Article.addArticle(article, function(err, article) {
-					console.log(1)
+					if (err) {
+						console.log('err', err)
+					} else {
+						console.log('article', article)
+					}
 				})
 			}
 			done()
